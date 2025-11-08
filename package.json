@@ -1,0 +1,61 @@
+{
+  "name": "valls-rpa",
+  "version": "1.0.0",
+  "description": "Aplicación RPA de escritorio con TypeScript",
+  "main": "dist/main.js",
+  "author": "Eduard Valls",
+  "scripts": {
+    "build:ts": "tsc",
+    "watch:ts": "tsc --watch",
+    "start": "npm run build:ts && electron .",
+    "dev": "tsc && electron . --inspect",
+    "build:win": "npm run build:ts && electron-builder --win",
+    "build:mac": "npm run build:ts && electron-builder --mac",
+    "build:linux": "npm run build:ts && electron-builder --linux"
+  },
+  "build": {
+    "appId": "com.valls.rpa",
+    "productName": "Valls RPA",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "src/index.html",
+      "node_modules/**/*"
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "tu-usuario",
+        "repo": "tu-repositorio"
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "build/icon.png",
+      "sign": null,
+      "verifyUpdateCodeSignature": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  },
+  "dependencies": {
+    "electron-updater": "^6.6.2",
+    "playwright": "^1.40.0"
+  },
+  "devDependencies": {
+    "@types/electron": "^1.6.10",
+    "@types/node": "^20.0.0",
+    "electron": "^27.0.0",
+    "electron-builder": "^24.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  }
+}
