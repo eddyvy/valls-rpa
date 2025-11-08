@@ -1,4 +1,15 @@
 import React, { useState } from 'react'
+import { Button } from './ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from './ui/dialog'
+import { Input } from './ui/input'
+import { Label } from './ui/label'
 
 interface GoogleSearchModalProps {
   isOpen: boolean
@@ -28,40 +39,39 @@ export const GoogleSearchModal: React.FC<GoogleSearchModalProps> = ({
     onClose()
   }
 
-  if (!isOpen) return null
-
   return (
-    <div className={`modal ${isOpen ? 'active' : ''}`} onClick={handleClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <h2>🔍 Búsqueda en Google</h2>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <span>🔍</span> Búsqueda en Google
+          </DialogTitle>
+          <DialogDescription>Ingresa el término que deseas buscar en Google</DialogDescription>
+        </DialogHeader>
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="searchTerm">Término de búsqueda:</label>
-            <input
-              type="text"
-              id="searchTerm"
-              placeholder="Ej: Playwright RPA"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              disabled={isLoading}
-              required
-            />
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="searchTerm">Término de búsqueda</Label>
+              <Input
+                id="searchTerm"
+                placeholder="Ej: Playwright RPA"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                disabled={isLoading}
+                required
+              />
+            </div>
           </div>
-          <div className="button-group">
-            <button
-              type="button"
-              className="btn-secondary"
-              onClick={handleClose}
-              disabled={isLoading}
-            >
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={handleClose} disabled={isLoading}>
               Cancelar
-            </button>
-            <button type="submit" className="btn-primary" disabled={isLoading}>
+            </Button>
+            <Button type="submit" disabled={isLoading}>
               Ejecutar
-            </button>
-          </div>
+            </Button>
+          </DialogFooter>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   )
 }

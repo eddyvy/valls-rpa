@@ -5,7 +5,7 @@ import { ResultsDisplay } from './components/ResultsDisplay'
 import { StatusBar } from './components/StatusBar'
 import { TaskCard } from './components/TaskCard'
 import { UpdateModal } from './components/UpdateModal'
-import './styles/App.css'
+import './styles/globals.css'
 import { DownloadProgress, StatusType, TaskCardData, UpdateInfo } from './types'
 
 const TASKS: TaskCardData[] = [
@@ -121,35 +121,41 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="container">
-      <h1>
-        <img src={logo} alt="logo" /> Valls RPA
-      </h1>
-      <p className="subtitle">Automatización de procesos robóticos con TypeScript</p>
+    <div className="min-h-screen bg-background text-foreground p-8">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold mb-2 flex items-center justify-center gap-2">
+            <img src={logo} alt="logo" className="w-12 h-12" /> Valls RPA
+          </h1>
+          <p className="text-muted-foreground">
+            Automatización de procesos robóticos con TypeScript
+          </p>
+        </div>
 
-      <div className="tasks-grid">
-        {TASKS.map((task) => (
-          <TaskCard key={task.taskName} {...task} onClick={handleTaskClick} />
-        ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          {TASKS.map((task) => (
+            <TaskCard key={task.taskName} {...task} onClick={handleTaskClick} />
+          ))}
+        </div>
+
+        <StatusBar status={status} />
+        <ResultsDisplay results={results} />
+
+        <GoogleSearchModal
+          isOpen={activeModal === 'googleSearch'}
+          onClose={() => setActiveModal(null)}
+          onSubmit={handleGoogleSearch}
+          isLoading={isLoading}
+        />
+
+        <UpdateModal
+          updateInfo={updateInfo}
+          downloadProgress={downloadProgress}
+          onDownload={handleDownloadUpdate}
+          onInstall={handleInstallUpdate}
+          onLater={handleUpdateLater}
+        />
       </div>
-
-      <StatusBar status={status} />
-      <ResultsDisplay results={results} />
-
-      <GoogleSearchModal
-        isOpen={activeModal === 'googleSearch'}
-        onClose={() => setActiveModal(null)}
-        onSubmit={handleGoogleSearch}
-        isLoading={isLoading}
-      />
-
-      <UpdateModal
-        updateInfo={updateInfo}
-        downloadProgress={downloadProgress}
-        onDownload={handleDownloadUpdate}
-        onInstall={handleInstallUpdate}
-        onLater={handleUpdateLater}
-      />
     </div>
   )
 }

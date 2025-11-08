@@ -24,7 +24,18 @@ export default {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: ['@tailwindcss/postcss', 'autoprefixer'],
+              },
+            },
+          },
+        ],
       },
       {
         test: /\.(png|jpe?g|gif|svg|ico)$/i,
@@ -37,6 +48,9 @@ export default {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
+    alias: {
+      '@': path.resolve(__dirname, 'src/renderer'),
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
