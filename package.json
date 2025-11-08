@@ -1,6 +1,6 @@
 {
   "name": "valls-rpa",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Aplicación RPA de escritorio con TypeScript",
   "main": "dist/main.js",
   "author": "Eduard Valls",
