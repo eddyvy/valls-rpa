@@ -1,15 +1,15 @@
-# RPA Desktop
+# Valls RPA
 
 Aplicación de escritorio para automatización de procesos.
 
 ## 📥 Descargar
 
-[⬇️ Descargar RPA Desktop v1.0.0](https://github.com/tu-usuario/tu-repositorio/releases/latest/download/RPA-Desktop-Setup-1.0.0.exe)
+[⬇️ Descargar Valls RPA](https://github.com/eddyvy/valls-rpa/releases)
 
 ## 🚀 Instalación
 
 1. Descarga el instalador
-2. Ejecuta `RPA-Desktop-Setup-1.0.0.exe`
+2. Ejecuta `Valls-RPA-Setup-X.Y.Z.exe`
 3. Sigue el asistente de instalación
 4. ¡Listo! La aplicación verificará automáticamente las actualizaciones
 
