@@ -5,19 +5,22 @@
   "main": "dist/main.js",
   "author": "Eduard Valls",
   "scripts": {
-    "build:ts": "tsc",
-    "watch:ts": "tsc --watch",
-    "start": "npm run build:ts && electron .",
-    "dev": "tsc && electron . --inspect",
-    "build:win": "npm run build:ts && electron-builder --win",
-    "build:mac": "npm run build:ts && electron-builder --mac",
-    "build:linux": "npm run build:ts && electron-builder --linux",
+    "build:main": "tsc --project tsconfig.json",
+    "build:renderer": "webpack --mode production --config webpack.config.mjs",
+    "build": "npm run build:main && npm run build:renderer",
+    "watch:main": "tsc --project tsconfig.json --watch",
+    "watch:renderer": "webpack --mode development --watch --config webpack.config.mjs",
+    "start": "electron .",
+    "dev": "npm run build && electron . --inspect",
+    "build:win": "npm run build && electron-builder --win",
+    "build:mac": "npm run build && electron-builder --mac",
+    "build:linux": "npm run build && electron-builder --linux",
     "version": "node ./script/version.js",
     "publish": "node ./script/release.js",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
-    "format": "prettier --write \"src/**/*.{ts,html,css,json}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,html,css,json}\""
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,html,css,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,html,css,json}\""
   },
   "build": {
     "appId": "com.valls.rpa",
@@ -27,7 +30,6 @@
     },
     "files": [
       "dist/**/*",
-      "src/index.html",
       "node_modules/**/*"
     ],
     "publish": [
@@ -55,23 +57,34 @@
   "dependencies": {
     "electron-log": "^5.4.3",
     "electron-updater": "^6.6.2",
-    "playwright": "^1.40.0"
+    "playwright": "^1.40.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@types/electron": "^1.6.10",
     "@types/node": "^20.0.0",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
     "@typescript-eslint/eslint-plugin": "^8.46.3",
     "@typescript-eslint/parser": "^8.46.3",
+    "css-loader": "^7.1.2",
     "dotenv": "^17.2.3",
     "electron": "^27.0.0",
     "electron-builder": "^24.0.0",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
+    "html-webpack-plugin": "^5.6.4",
     "prettier": "^3.6.2",
     "prettier-plugin-organize-imports": "^4.3.0",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.4",
     "ts-node": "^10.9.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "webpack": "^5.102.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
   }
 }

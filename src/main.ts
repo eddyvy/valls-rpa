@@ -33,7 +33,7 @@ function createWindow(): void {
     icon: path.join(__dirname, '../build/icon.png'),
   })
 
-  mainWindow.loadFile(path.join(__dirname, '../src/index.html'))
+  mainWindow.loadFile(path.join(__dirname, 'index.html'))
 
   mainWindow.on('closed', () => {
     mainWindow = null
