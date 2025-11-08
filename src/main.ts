@@ -2,12 +2,24 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import * as path from 'path'
 import { TaskResult, TaskParams } from './tasks/types'
+import log from 'electron-log'
 
 let mainWindow: BrowserWindow | null
 
 // Configurar autoUpdater
+autoUpdater.logger = log
+if (autoUpdater.logger) {
+  ;(autoUpdater.logger as any).transports.file.level = 'info'
+}
 autoUpdater.autoDownload = false // No descargar automáticamente
 autoUpdater.autoInstallOnAppQuit = true
+
+// Forzar a usar el canal de GitHub releases
+autoUpdater.setFeedURL({
+  provider: 'github',
+  owner: 'eddyvy',
+  repo: 'valls-rpa',
+})
 
 function createWindow(): void {
   mainWindow = new BrowserWindow({
