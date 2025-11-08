@@ -13,7 +13,11 @@
     "build:mac": "npm run build:ts && electron-builder --mac",
     "build:linux": "npm run build:ts && electron-builder --linux",
     "version": "node ./script/version.js",
-    "publish": "node ./script/release.js"
+    "publish": "node ./script/release.js",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.{ts,html,css,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,html,css,json}\""
   },
   "build": {
     "appId": "com.valls.rpa",
@@ -54,11 +58,19 @@
     "playwright": "^1.40.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
     "@types/electron": "^1.6.10",
     "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.3",
+    "@typescript-eslint/parser": "^8.46.3",
     "dotenv": "^17.2.3",
     "electron": "^27.0.0",
     "electron-builder": "^24.0.0",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2",
+    "prettier-plugin-organize-imports": "^4.3.0",
     "ts-node": "^10.9.0",
     "typescript": "^5.0.0"
   }

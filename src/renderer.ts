@@ -15,9 +15,7 @@ class RPAApp {
     this.resultsEl = document.getElementById('results')!
     this.updateModal = document.getElementById('updateModal')!
     this.googleSearchModal = document.getElementById('googleSearchModal')!
-    this.googleSearchForm = document.getElementById(
-      'googleSearchForm'
-    ) as HTMLFormElement
+    this.googleSearchForm = document.getElementById('googleSearchForm') as HTMLFormElement
 
     this.initializeEventListeners()
     this.setupUpdateListeners()
@@ -27,9 +25,7 @@ class RPAApp {
     // Event listeners para las tarjetas de tareas
     document.querySelectorAll('.task-card').forEach((card) => {
       card.addEventListener('click', (e) => {
-        const taskName = (e.currentTarget as HTMLElement).getAttribute(
-          'data-task'
-        )
+        const taskName = (e.currentTarget as HTMLElement).getAttribute('data-task')
         if (taskName) {
           this.openTask(taskName)
         }
@@ -37,14 +33,10 @@ class RPAApp {
     })
 
     // Event listener para el formulario de Google
-    this.googleSearchForm.addEventListener('submit', (e) =>
-      this.handleGoogleSearch(e)
-    )
+    this.googleSearchForm.addEventListener('submit', (e) => this.handleGoogleSearch(e))
 
     // Event listener para botón cancelar
-    document
-      .getElementById('cancelBtn')
-      ?.addEventListener('click', () => this.closeModal())
+    document.getElementById('cancelBtn')?.addEventListener('click', () => this.closeModal())
 
     // Cerrar modal al hacer clic fuera
     this.googleSearchModal.addEventListener('click', (e) => {
@@ -72,8 +64,7 @@ class RPAApp {
   }
 
   private showStatus(status: StatusType): void {
-    const spinner =
-      status.type === 'loading' ? '<span class="spinner"></span>' : ''
+    const spinner = status.type === 'loading' ? '<span class="spinner"></span>' : ''
     this.statusEl.innerHTML = `${spinner}${status.message}`
     this.statusEl.className = `status active ${status.type}`
   }
@@ -87,9 +78,7 @@ class RPAApp {
       this.resultsEl.innerHTML = `
         <h3>📊 Resultados:</h3>
         <ul>
-          ${data
-            .map((item, i) => `<li><strong>${i + 1}.</strong> ${item}</li>`)
-            .join('')}
+          ${data.map((item, i) => `<li><strong>${i + 1}.</strong> ${item}</li>`).join('')}
         </ul>
       `
       this.resultsEl.classList.add('active')
@@ -102,9 +91,7 @@ class RPAApp {
 
   private setFormDisabled(disabled: boolean): void {
     const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement
-    const searchInput = document.getElementById(
-      'searchTerm'
-    ) as HTMLInputElement
+    const searchInput = document.getElementById('searchTerm') as HTMLInputElement
 
     submitBtn.disabled = disabled
     searchInput.disabled = disabled
@@ -113,9 +100,7 @@ class RPAApp {
   private async handleGoogleSearch(e: Event): Promise<void> {
     e.preventDefault()
 
-    const searchInput = document.getElementById(
-      'searchTerm'
-    ) as HTMLInputElement
+    const searchInput = document.getElementById('searchTerm') as HTMLInputElement
     const searchTerm = searchInput.value.trim()
 
     if (!searchTerm) return
@@ -146,8 +131,7 @@ class RPAApp {
         })
       }
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'Error desconocido'
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
       this.showStatus({
         message: `❌ Error: ${errorMessage}`,
         type: 'error',
@@ -176,13 +160,11 @@ class RPAApp {
       progressBar.style.width = `${progress.percent}%`
       progressText.textContent = `${Math.round(
         progress.percent
-      )}% - ${this.formatBytes(progress.transferred)} / ${this.formatBytes(
-        progress.total
-      )}`
+      )}% - ${this.formatBytes(progress.transferred)} / ${this.formatBytes(progress.total)}`
     })
 
     // Listener para descarga completada
-    window.electronAPI.onUpdateDownloaded((info) => {
+    window.electronAPI.onUpdateDownloaded((_info) => {
       const downloadBtn = document.getElementById('downloadUpdateBtn')!
       const installBtn = document.getElementById('installUpdateBtn')!
       const updateMessage = document.getElementById('updateMessage')!
@@ -193,21 +175,15 @@ class RPAApp {
     })
 
     // Botón descargar actualización
-    document
-      .getElementById('downloadUpdateBtn')
-      ?.addEventListener('click', () => {
-        window.electronAPI.downloadUpdate()
-        ;(
-          document.getElementById('downloadUpdateBtn') as HTMLButtonElement
-        ).disabled = true
-      })
+    document.getElementById('downloadUpdateBtn')?.addEventListener('click', () => {
+      window.electronAPI.downloadUpdate()
+      ;(document.getElementById('downloadUpdateBtn') as HTMLButtonElement).disabled = true
+    })
 
     // Botón instalar actualización
-    document
-      .getElementById('installUpdateBtn')
-      ?.addEventListener('click', () => {
-        window.electronAPI.quitAndInstall()
-      })
+    document.getElementById('installUpdateBtn')?.addEventListener('click', () => {
+      window.electronAPI.quitAndInstall()
+    })
 
     // Botón más tarde
     document.getElementById('updateLaterBtn')?.addEventListener('click', () => {

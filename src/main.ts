@@ -1,8 +1,8 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
+import log from 'electron-log'
 import { autoUpdater } from 'electron-updater'
 import * as path from 'path'
-import { TaskResult, TaskParams } from './tasks/types'
-import log from 'electron-log'
+import { TaskParams, TaskResult } from './tasks/types'
 
 let mainWindow: BrowserWindow | null
 
@@ -79,7 +79,7 @@ function setupAutoUpdater(): void {
     }
   })
 
-  autoUpdater.on('update-not-available', (info) => {
+  autoUpdater.on('update-not-available', (_info) => {
     sendStatusToWindow('La aplicación está actualizada')
   })
 

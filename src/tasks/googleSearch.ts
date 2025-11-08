@@ -1,4 +1,4 @@
-import { chromium, Browser, Page } from 'playwright'
+import { Browser, chromium, Page } from 'playwright'
 import { GoogleSearchParams } from './types'
 
 export async function execute(params: GoogleSearchParams): Promise<string[]> {
@@ -24,7 +24,7 @@ export async function execute(params: GoogleSearchParams): Promise<string[]> {
     try {
       await page.click('button:has-text("Aceptar todo")', { timeout: 3000 })
       console.log('✅ Cookies aceptadas')
-    } catch (e) {
+    } catch {
       console.log('ℹ️  No apareció banner de cookies')
     }
 
