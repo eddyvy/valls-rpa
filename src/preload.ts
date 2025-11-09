@@ -5,6 +5,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
   executeTask: (taskName: string, params: TaskParams): Promise<TaskResult> =>
     ipcRenderer.invoke('execute-task', taskName, params),
 
+  // APIs de autenticación
+  login: (username: string, password: string) => ipcRenderer.invoke('login', username, password),
+  getToken: () => ipcRenderer.invoke('get-token'),
+  logout: () => ipcRenderer.invoke('logout'),
+
   // APIs de actualización
   checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
   downloadUpdate: () => ipcRenderer.invoke('download-update'),
@@ -29,6 +34,12 @@ declare global {
   interface Window {
     electronAPI: {
       executeTask: (taskName: string, params: TaskParams) => Promise<TaskResult>
+      login: (
+        username: string,
+        password: string
+      ) => Promise<{ success: boolean; token?: string; message?: string }>
+      getToken: () => Promise<string | null>
+      logout: () => Promise<void>
       checkForUpdates: () => Promise<any>
       downloadUpdate: () => Promise<any>
       quitAndInstall: () => void

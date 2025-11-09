@@ -23,3 +23,13 @@ export interface DownloadProgress {
   total: number
   bytesPerSecond: number
 }
+
+export interface LoginResponse {
+  message: string
+  token: string | null
+}
+
+export interface LoginCredentials {
+  username: string
+  password: string
+}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import logo from './assets/logo.png'
 import { GoogleSearchModal } from './components/GoogleSearchModal'
+import { LoginModal } from './components/LoginModal'
 import { ResultsDisplay } from './components/ResultsDisplay'
 import { StatusBar } from './components/StatusBar'
 import { TaskCard } from './components/TaskCard'
@@ -41,11 +42,32 @@ export const App: React.FC = () => {
   const [results, setResults] = useState<string[] | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
+  // Estado de autenticación
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true)
+  const [loginError, setLoginError] = useState<string | null>(null)
+  const [isLoggingIn, setIsLoggingIn] = useState(false)
+
   // Estado para actualizaciones
   const [updateInfo, setUpdateInfo] = useState<UpdateInfo | null>(null)
   const [downloadProgress, setDownloadProgress] = useState<DownloadProgress | null>(null)
 
   useEffect(() => {
+    // Verificar si hay un token guardado
+    const checkAuth = async () => {
+      try {
+        const token = await window.electronAPI.getToken()
+        setIsAuthenticated(!!token)
+      } catch (error) {
+        console.error('Error checking auth:', error)
+        setIsAuthenticated(false)
+      } finally {
+        setIsCheckingAuth(false)
+      }
+    }
+
+    checkAuth()
+
     // Configurar listeners de actualización
     window.electronAPI.onUpdateAvailable((info: UpdateInfo) => {
       setUpdateInfo(info)
@@ -59,6 +81,27 @@ export const App: React.FC = () => {
       // El componente UpdateModal maneja este estado internamente
     })
   }, [])
+
+  const handleLogin = async (username: string, password: string) => {
+    setIsLoggingIn(true)
+    setLoginError(null)
+
+    try {
+      const result = await window.electronAPI.login(username, password)
+
+      if (result.success && result.token) {
+        setIsAuthenticated(true)
+        setLoginError(null)
+      } else {
+        setLoginError(result.message || 'Error de autenticación')
+      }
+    } catch (error) {
+      console.error('Login error:', error)
+      setLoginError('Error de conexión con el servidor')
+    } finally {
+      setIsLoggingIn(false)
+    }
+  }
 
   const handleTaskClick = (taskName: string) => {
     if (taskName === 'googleSearch') {
@@ -118,6 +161,39 @@ export const App: React.FC = () => {
   const handleUpdateLater = () => {
     setUpdateInfo(null)
     setDownloadProgress(null)
+  }
+
+  // Mostrar pantalla de carga mientras se verifica la autenticación
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
+        <div className="text-center">
+          <img src={logo} alt="logo" className="w-24 h-24 mx-auto mb-4 animate-pulse" />
+          <p className="text-muted-foreground">Cargando...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Mostrar modal de login si no está autenticado
+  if (!isAuthenticated) {
+    return (
+      <>
+        <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
+          <div className="text-center">
+            <img src={logo} alt="logo" className="w-24 h-24 mx-auto mb-4" />
+            <h1 className="text-3xl font-bold mb-2">Valls RPA</h1>
+            <p className="text-muted-foreground">Automatización de procesos robóticos</p>
+          </div>
+        </div>
+        <LoginModal
+          isOpen={true}
+          onLogin={handleLogin}
+          isLoading={isLoggingIn}
+          error={loginError}
+        />
+      </>
+    )
   }
 
   return (

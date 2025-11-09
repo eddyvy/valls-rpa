@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import log from 'electron-log'
 import { autoUpdater } from 'electron-updater'
 import * as path from 'path'
+import { authService } from './services/auth'
 import { TaskParams, TaskResult } from './tasks/types'
 
 let mainWindow: BrowserWindow | null
@@ -147,4 +148,17 @@ ipcMain.handle('download-update', async () => {
 
 ipcMain.handle('quit-and-install', () => {
   autoUpdater.quitAndInstall()
+})
+
+// Auth handlers
+ipcMain.handle('login', async (event, username: string, password: string) => {
+  return await authService.login(username, password)
+})
+
+ipcMain.handle('get-token', async () => {
+  return authService.getToken()
+})
+
+ipcMain.handle('logout', async () => {
+  authService.logout()
 })
