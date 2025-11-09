@@ -1,3 +1,15 @@
+/**
+ * MAIN PROCESS (BACKEND)
+ *
+ * Este es el proceso principal de Electron que corre en Node.js.
+ * Aquí se maneja:
+ * - Creación de ventanas
+ * - Sistema de archivos
+ * - Tareas de automatización
+ * - Servicios de backend
+ * - Actualizaciones automáticas
+ */
+
 import { app, BrowserWindow, ipcMain } from 'electron'
 import log from 'electron-log'
 import { autoUpdater } from 'electron-updater'
@@ -29,12 +41,12 @@ function createWindow(): void {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, '../preload/index.js'),
     },
-    icon: path.join(__dirname, '../build/icon.png'),
+    icon: path.join(__dirname, '../../build/icon.png'),
   })
 
-  mainWindow.loadFile(path.join(__dirname, 'index.html'))
+  mainWindow.loadFile(path.join(__dirname, '../index.html'))
 
   mainWindow.on('closed', () => {
     mainWindow = null

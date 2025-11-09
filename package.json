@@ -2,7 +2,7 @@
   "name": "valls-rpa",
   "version": "1.0.2",
   "description": "Aplicación RPA de escritorio con TypeScript",
-  "main": "dist/main.js",
+  "main": "dist/main/index.js",
   "author": "Eduard Valls",
   "scripts": {
     "build:main": "tsc --project tsconfig.json",

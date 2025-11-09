@@ -1,5 +1,17 @@
+/**
+ * PRELOAD SCRIPT (PUENTE/BRIDGE)
+ *
+ * Este script se ejecuta antes de cargar el renderer y actúa como puente seguro.
+ * Expone APIs controladas del proceso principal al proceso de renderizado.
+ *
+ * IMPORTANTE:
+ * - Corre con privilegios de Node.js pero en el contexto del renderer
+ * - contextBridge.exposeInMainWorld es la única forma segura de exponer APIs
+ * - Nunca exponer require(), process, o módulos completos de Node.js
+ */
+
 import { contextBridge, ipcRenderer } from 'electron'
-import { TaskParams, TaskResult } from './tasks/types'
+import type { TaskParams, TaskResult } from '../main/tasks/types'
 
 contextBridge.exposeInMainWorld('electronAPI', {
   executeTask: (taskName: string, params: TaskParams): Promise<TaskResult> =>

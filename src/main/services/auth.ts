@@ -2,7 +2,7 @@ import axios from 'axios'
 import { app } from 'electron'
 import * as fs from 'fs'
 import * as path from 'path'
-import { AppConfig } from '../config'
+import { AppConfig } from '../../config'
 
 interface LoginResponse {
   message: string
