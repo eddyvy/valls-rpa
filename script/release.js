@@ -14,7 +14,7 @@ console.log(`📦 Versión actual: ${package.version}`)
 
 rl.question('📝 Notas del release: ', (notes) => {
   console.log('\n🔨 Compilando TypeScript...')
-  execSync('npm run build', { stdio: 'inherit' })
+  execSync('npm run build:win', { stdio: 'inherit' })
 
   console.log('\n📦 Creando instalador y publicando...')
 
@@ -22,7 +22,7 @@ rl.question('📝 Notas del release: ', (notes) => {
   process.env.RELEASE_NOTES = notes || 'Nueva versión'
 
   console.log('\n🏷️  Creando tag de git...')
-  const tagName = `${package.version}`
+  const tagName = `v${package.version}`
 
   try {
     // Crear tag local
