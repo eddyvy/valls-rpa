@@ -95,24 +95,6 @@ src/
 └── tasks/                # Tareas de automatización
 ```
 
-## 🎨 Trabajando con shadcn/ui
-
-Este proyecto está configurado con shadcn/ui. Para más información:
-
-- **[INICIO-RAPIDO.md](./INICIO-RAPIDO.md)** - Guía rápida de uso
-- **[SHADCN-SETUP.md](./SHADCN-SETUP.md)** - Documentación completa
-- **[CAMBIOS-SHADCN.md](./CAMBIOS-SHADCN.md)** - Lista de cambios realizados
-
-### Componentes disponibles
-
-- Button
-- Card
-- Input
-- Label
-- Dialog
-
-Ver `src/renderer/components/ShadcnExample.tsx` para ejemplos de uso.
-
 ## 📝 Licencia
 
 Este proyecto es privado.
