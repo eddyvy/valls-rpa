@@ -16,7 +16,7 @@
     "build:mac": "npm run build && electron-builder --mac",
     "build:linux": "npm run build && electron-builder --linux",
     "version": "node ./script/version.js",
-    "publish": "node ./script/release.js",
+    "release": "node ./script/release.js",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,html,css,json}\"",

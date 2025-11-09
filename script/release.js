@@ -14,7 +14,7 @@ console.log(`📦 Versión actual: ${package.version}`)
 
 rl.question('📝 Notas del release: ', (notes) => {
   console.log('\n🔨 Compilando TypeScript...')
-  execSync('npm run build:ts', { stdio: 'inherit' })
+  execSync('npm run build', { stdio: 'inherit' })
 
   console.log('\n📦 Creando instalador y publicando...')
 
@@ -41,9 +41,7 @@ rl.question('📝 Notas del release: ', (notes) => {
   execSync('electron-builder --win --publish always', { stdio: 'inherit' })
 
   console.log('\n✅ Release publicado en GitHub!')
-  console.log(
-    `🔗 https://github.com/tu-usuario/tu-repositorio/releases/tag/v${package.version}`
-  )
+  console.log(`🔗 https://github.com/tu-usuario/tu-repositorio/releases/tag/v${package.version}`)
 
   rl.close()
 })
