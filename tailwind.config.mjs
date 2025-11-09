@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   darkMode: ['class'],
   content: ['./src/renderer/**/*.{ts,tsx}'],
   theme: {
@@ -67,5 +67,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [(await import('tailwindcss-animate')).default],
 }
