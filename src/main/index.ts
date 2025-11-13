@@ -174,3 +174,9 @@ ipcMain.handle('get-token', async () => {
 ipcMain.handle('logout', async () => {
   authService.logout()
 })
+
+ipcMain.handle('check-token', async () => {
+  return await authService.checkToken()
+})
+
+// Manejadores de actualización

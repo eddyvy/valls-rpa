@@ -21,6 +21,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   login: (username: string, password: string) => ipcRenderer.invoke('login', username, password),
   getToken: () => ipcRenderer.invoke('get-token'),
   logout: () => ipcRenderer.invoke('logout'),
+  checkToken: () => ipcRenderer.invoke('check-token'),
 
   // APIs de actualización
   checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
@@ -52,6 +53,11 @@ declare global {
       ) => Promise<{ success: boolean; token?: string; message?: string }>
       getToken: () => Promise<string | null>
       logout: () => Promise<void>
+      checkToken: () => Promise<{
+        success: boolean
+        message: string
+        payload?: { user: string; exp: number; iat: number }
+      }>
       checkForUpdates: () => Promise<any>
       downloadUpdate: () => Promise<any>
       quitAndInstall: () => void

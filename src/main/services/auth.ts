@@ -15,6 +15,16 @@ interface LoginResult {
   message?: string
 }
 
+interface CheckTokenResponse {
+  success: boolean
+  message: string
+  payload?: {
+    user: string
+    exp: number
+    iat: number
+  }
+}
+
 class AuthService {
   private tokenPath: string
   private token: string | null = null
@@ -118,6 +128,48 @@ class AuthService {
 
   logout(): void {
     this.deleteToken()
+  }
+
+  async checkToken(): Promise<CheckTokenResponse> {
+    const outcome: CheckTokenResponse = {
+      success: false,
+      message: 'Token no verificado',
+    }
+
+    if (!this.token) {
+      outcome.message = 'No hay token disponible'
+    } else {
+      try {
+        const response = await axios.get<CheckTokenResponse>(`${AppConfig.BACK_URL}/check-token`, {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        })
+
+        outcome.success = response.data.success
+        outcome.message = response.data.message
+        outcome.payload = response.data.payload
+      } catch (error) {
+        console.error('Check token error:', error)
+
+        if (axios.isAxiosError(error) && error.response) {
+          const message = error.response.data?.message || 'Error al verificar el token'
+          outcome.message = message
+          return {
+            success: false,
+            message,
+          }
+        } else {
+          outcome.message = error instanceof Error ? error.message : 'Error de red'
+        }
+      }
+    }
+
+    if (outcome.success === false) {
+      this.deleteToken()
+    }
+
+    return outcome
   }
 }
 

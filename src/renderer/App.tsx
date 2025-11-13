@@ -5,6 +5,7 @@ import { LoginModal } from './components/LoginModal'
 import { ResultsDisplay } from './components/ResultsDisplay'
 import { StatusBar } from './components/StatusBar'
 import { TaskCard } from './components/TaskCard'
+import { Button } from './components/ui/button'
 import { UpdateModal } from './components/UpdateModal'
 import './styles/globals.css'
 import { DownloadProgress, StatusType, TaskCardData, UpdateInfo } from './types'
@@ -47,17 +48,27 @@ export const App: React.FC = () => {
   const [isCheckingAuth, setIsCheckingAuth] = useState(true)
   const [loginError, setLoginError] = useState<string | null>(null)
   const [isLoggingIn, setIsLoggingIn] = useState(false)
+  const [username, setUsername] = useState<string | null>(null)
 
   // Estado para actualizaciones
   const [updateInfo, setUpdateInfo] = useState<UpdateInfo | null>(null)
   const [downloadProgress, setDownloadProgress] = useState<DownloadProgress | null>(null)
 
   useEffect(() => {
-    // Verificar si hay un token guardado
+    // Verificar si el token es válido
     const checkAuth = async () => {
       try {
-        const token = await window.electronAPI.getToken()
-        setIsAuthenticated(!!token)
+        const result = await window.electronAPI.checkToken()
+
+        if (result.success) {
+          console.log('Token válido:', result.payload)
+          setIsAuthenticated(true)
+          setUsername(result.payload?.user || null)
+        } else {
+          console.log('Token inválido o expirado:', result.message)
+          setIsAuthenticated(false)
+          // El checkToken ya hace logout automáticamente si el token no es válido
+        }
       } catch (error) {
         console.error('Error checking auth:', error)
         setIsAuthenticated(false)
@@ -92,6 +103,12 @@ export const App: React.FC = () => {
       if (result.success && result.token) {
         setIsAuthenticated(true)
         setLoginError(null)
+
+        // Obtener el username del token
+        const tokenCheck = await window.electronAPI.checkToken()
+        if (tokenCheck.success && tokenCheck.payload) {
+          setUsername(tokenCheck.payload.user)
+        }
       } else {
         setLoginError(result.message || 'Error de autenticación')
       }
@@ -163,6 +180,14 @@ export const App: React.FC = () => {
     setDownloadProgress(null)
   }
 
+  const handleLogout = async () => {
+    await window.electronAPI.logout()
+    setIsAuthenticated(false)
+    setUsername(null)
+    setResults(null)
+    setStatus(null)
+  }
+
   // Mostrar pantalla de carga mientras se verifica la autenticación
   if (isCheckingAuth) {
     return (
@@ -199,6 +224,20 @@ export const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-background text-foreground p-8">
       <div className="max-w-6xl mx-auto">
+        {/* Header con usuario y logout */}
+        <div className="flex justify-end items-center mb-4">
+          <div className="flex items-center gap-4">
+            {username && (
+              <span className="text-sm text-muted-foreground">
+                👤 <span className="font-medium text-foreground">{username}</span>
+              </span>
+            )}
+            <Button variant="outline" size="sm" onClick={handleLogout}>
+              Cerrar Sesión
+            </Button>
+          </div>
+        </div>
+
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-2 flex items-center justify-center gap-2">
             <img src={logo} alt="logo" className="w-12 h-12" /> Valls RPA
